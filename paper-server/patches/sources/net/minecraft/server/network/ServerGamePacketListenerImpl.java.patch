@@ -1235,10 +1235,11 @@
                                      this.player.swing(hand, true);
                                  }
  
-@@ -1394,6 +_,15 @@
+@@ -1394,20 +_,24 @@
                                      && success.swingSource() == InteractionResult.SwingSource.SERVER) {
                                      this.player.swing(hand, true);
                                  }
+-                            } else {
 +                            // Paper start - Fix inventory desync; MC-99075
 +                            // From level.mayInteract(this.player, pos)
 +                            } else if (this.server.isUnderSpawnProtection(level, pos, player)) {
@@ -1248,10 +1249,10 @@
 +                                    this.player.containerMenu.forceHeldSlot(hand);
 +                                }
 +                            // Paper end - Fix inventory desync
-                             } else {
++                            } else { // TEMP: fix reverted to reproduce GH-13941 — restore before committing
                                  this.player.sendBuildLimitMessage(true, maxY);
                              }
-@@ -1401,13 +_,8 @@
+ 
                              this.send(new ClientboundBlockUpdatePacket(level, pos));
                              this.send(new ClientboundBlockUpdatePacket(level, pos.relative(direction)));
                          }
